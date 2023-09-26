@@ -12,7 +12,9 @@ class piece{
 public:
   string name = "";
   string color = "";
-  virtual bool legal_move (vector<piece *> chessboard, int x, int y); 
+  bool touched = false;
   virtual vector <int> get_all_moves(vector<piece *> chessboard, int x);
+  virtual bool legal_move (vector<piece *> chessboard, int x, int y); 
 };
+
 #endif
