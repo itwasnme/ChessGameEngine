@@ -651,7 +651,7 @@ vector <int> king::get_all_moves(vector<piece *> chessboard, int x){
 // Check for castling validity
 bool king::legal_castling (vector<piece *> chessboard, int x, int y){
 
-// Castling right ->TODO: Make suro not check before, during, and after movement.
+// Castling right
 vector <int> moves;
 
   // Castling right

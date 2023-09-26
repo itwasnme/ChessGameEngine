@@ -17,12 +17,12 @@ bool piece::legal_move(vector<piece *> chessboard, int x, int y){
   if(count(moves.begin(), moves.end(), y)) {
     return true;
   }else{
-    // If there are no legal moves, print available move positions for reference. Does not inform on castling (TODO).
-    cout << "\nPossible move positions for selected " + chessboard[x]->name + ": ";
-    for(int i=0; i<moves.size();i++){
-      cout<<moves[i]<<" ";
-    }
-    cout<<"\n"<<endl;
+    // If there are no legal moves, print available move positions for debugging. Does not inform on castling (TODO).
+    //cout << "\nPossible move positions for selected " + chessboard[x]->name + ": ";
+    //for(int i=0; i<moves.size();i++){
+    //  cout<<moves[i]<<" ";
+    //}
+    //cout<<"\n"<<endl;
     return false;
   }
 }

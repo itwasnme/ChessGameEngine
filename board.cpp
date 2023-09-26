@@ -93,8 +93,8 @@ bool board::sanitize_input(int x, int y){
     return false;
   }
 
-  // Ensuring that the user is not moving their own color's piece onto a square occupied by their own color (except for castling TODO)
-  if(chessboard[x]->color == chessboard[y] -> color && chessboard[x] ->name != "king"){ 
+  // Ensuring that the user is not moving their own color's piece onto a square occupied by their own color
+  if(chessboard[x]->color == chessboard[y] -> color){ 
     invalidMove("Invalid move. You cannot move your own piece to a square occupied by your own color.");
     return false;
   }
@@ -180,7 +180,7 @@ void board::castling(int x, int y){
     delete (chessboard[3]);
     chessboard[3] = chessboard[0];
     chessboard[0] = new piece();
-    chessboard[3] -> touched == true;
+    chessboard[3] -> touched = true;
 
   }else if(y == 6){
     for(int i = 0; i<black_positions.size(); i++){
@@ -199,7 +199,7 @@ void board::castling(int x, int y){
     delete (chessboard[5]);
     chessboard[5] = chessboard[7];
     chessboard[7] = new piece();
-    chessboard[5] -> touched == true;
+    chessboard[5] -> touched = true;
 
   }else if(y == 58){
     for(int i = 0; i<white_positions.size(); i++){
@@ -218,7 +218,7 @@ void board::castling(int x, int y){
     delete (chessboard[59]);
     chessboard[59] = chessboard[56];
     chessboard[56] = new piece();
-    chessboard[59] -> touched == true;
+    chessboard[59] -> touched = true;
 
   }else if(y == 62){
     for(int i = 0; i<white_positions.size(); i++){
@@ -237,7 +237,7 @@ void board::castling(int x, int y){
     delete (chessboard[61]);
     chessboard[61] = chessboard[63];
     chessboard[63] = new piece();
-    chessboard[61] -> touched == true;
+    chessboard[61] -> touched = true;
 
   }else{
     invalidMove("Something is wrong with castling implementation");
@@ -257,7 +257,7 @@ void board::castling(int x, int y){
   int check_status = who_is_in_check();
   if(check_status != 0){
     if(check_status == 1){
-      if(checkmate()){ //TODO
+      if(checkmate()){ 
         cout<<"White's king is in checkmate. You lose!"<<endl;
         end = true;
       }else{
@@ -265,7 +265,7 @@ void board::castling(int x, int y){
         cout<<"White's king is in check."<<endl;
       }
     }else if(check_status == 2){
-      if(checkmate()){ //TODO
+      if(checkmate()){
         cout<<"Black's king is in checkmate. You lose!"<<endl;
         end = true;
       }else{
@@ -296,7 +296,7 @@ void board::move(int x, int y){
     if(temp->legal_castling(chessboard,x,y)){
       castling(x,y);
     }else{
-      invalidMove("Your " + chessboard[x] -> name + " can't be moved to position " + to_string(y));
+      invalidMove("Your " + chessboard[x] -> name + " can't be moved to that position");
     }
     return;
   }
@@ -309,14 +309,14 @@ void board::move(int x, int y){
     if(temp->legal_castling(chessboard,x,y)){
       castling(x,y);
     }else{
-      invalidMove("Your " + chessboard[x] -> name + " can't be moved to position " + to_string(y));
+      invalidMove("Your " + chessboard[x] -> name + " can't be moved to that position");
     }
     return;
   }
 
   // Second checkpoint: Check if the selected piece can make the intended move based on the current board status
   if( !(*chessboard[x]).legal_move(chessboard,x,y) ){
-    invalidMove("Your " + chessboard[x] -> name + " can't be moved to position " + to_string(y));
+    invalidMove("Your " + chessboard[x] -> name + " can't be moved to that position");
     return;
   }
 
@@ -504,7 +504,7 @@ void board::move(int x, int y){
   int check_status = who_is_in_check();
   if(check_status != 0){
     if(check_status == 1){
-      if(checkmate()){ //TODO
+      if(checkmate()){ 
         cout<<"White's king is in checkmate. You lose!"<<endl;
         end = true;
       }else{
@@ -512,7 +512,7 @@ void board::move(int x, int y){
         cout<<"White's king is in check."<<endl;
       }
     }else if(check_status == 2){
-      if(checkmate()){ //TODO
+      if(checkmate()){
         cout<<"Black's king is in checkmate. You lose!"<<endl;
         end = true;
       }else{
@@ -544,7 +544,7 @@ bool board::checkmate(){
           chessboard[white_positions[i]] = chessboard[moves[j]];
           chessboard[moves[j]] = temp;
         }else{
-          cout<<"LOGIC ERROR!"<<endl;
+          cout<<"LOGIC ERROR at checkmate()!"<<endl;
         }
       }
     }
@@ -566,7 +566,7 @@ bool board::checkmate(){
           chessboard[black_positions[i]] = chessboard[moves[j]];
           chessboard[moves[j]] = temp;
         }else{
-          cout<<"LOGIC ERROR!"<<endl;
+          cout<<"LOGIC ERROR at checkmate()!"<<endl;
         }
       }
     }
@@ -586,13 +586,13 @@ void board::printBoard(){
     if(i<8){
       if( i % 2 == 0){
         if(chessboard[i]->color=="black"){
-          SetConsoleTextAttribute(hConsole, 10); //negro
+          SetConsoleTextAttribute(hConsole, 10); // black
         }else{
           SetConsoleTextAttribute(hConsole, 15);
         }
       }else{
         if(chessboard[i]->color=="black"){
-          SetConsoleTextAttribute(hConsole, 18); // azul
+          SetConsoleTextAttribute(hConsole, 18); // blue
         }else{
           SetConsoleTextAttribute(hConsole, 23);
         }
@@ -601,14 +601,14 @@ void board::printBoard(){
       if( i % 2 == 0){
         if( i % 2 == 0){
           if(chessboard[i]->color=="black"){
-            SetConsoleTextAttribute(hConsole, 18); //negro
+            SetConsoleTextAttribute(hConsole, 18); // black
           }else{
             SetConsoleTextAttribute(hConsole, 23);
           }
         }
       }else{
         if(chessboard[i]->color=="black"){
-            SetConsoleTextAttribute(hConsole, 10); // azul
+            SetConsoleTextAttribute(hConsole, 10); // blue
           }else{
             SetConsoleTextAttribute(hConsole, 15);
           }
@@ -616,13 +616,13 @@ void board::printBoard(){
     }else if(i>15 && i<24){
       if( i % 2 == 0){
         if(chessboard[i]->color=="black"){
-          SetConsoleTextAttribute(hConsole, 10); //negro
+          SetConsoleTextAttribute(hConsole, 10); // black
         }else{
           SetConsoleTextAttribute(hConsole, 15);
         }
       }else{
         if(chessboard[i]->color=="black"){
-          SetConsoleTextAttribute(hConsole, 18); // azul
+          SetConsoleTextAttribute(hConsole, 18); // blue
         }else{
           SetConsoleTextAttribute(hConsole, 23);
         }
@@ -630,13 +630,13 @@ void board::printBoard(){
     }else if(i>23 && i<32){
       if( i % 2 == 0){
         if(chessboard[i]->color=="black"){
-          SetConsoleTextAttribute(hConsole, 18); //negro
+          SetConsoleTextAttribute(hConsole, 18); // black
         }else{
           SetConsoleTextAttribute(hConsole, 23);
         }
       }else{
         if(chessboard[i]->color=="black"){
-          SetConsoleTextAttribute(hConsole, 10); // azul
+          SetConsoleTextAttribute(hConsole, 10); // blue
         }else{
           SetConsoleTextAttribute(hConsole, 15);
         }
@@ -644,13 +644,13 @@ void board::printBoard(){
     }else if(i>31 && i<40){
       if( i % 2 == 0){
         if(chessboard[i]->color=="black"){
-          SetConsoleTextAttribute(hConsole, 10); //negro
+          SetConsoleTextAttribute(hConsole, 10); // black
         }else{
           SetConsoleTextAttribute(hConsole, 15);
         }
       }else{
         if(chessboard[i]->color=="black"){
-          SetConsoleTextAttribute(hConsole, 18); // azul
+          SetConsoleTextAttribute(hConsole, 18); // blue
         }else{
           SetConsoleTextAttribute(hConsole, 23);
         }
@@ -658,13 +658,13 @@ void board::printBoard(){
     }else if(i>39 && i<48){
       if( i % 2 == 0){
         if(chessboard[i]->color=="black"){
-          SetConsoleTextAttribute(hConsole, 18); //negro
+          SetConsoleTextAttribute(hConsole, 18); // black
         }else{
           SetConsoleTextAttribute(hConsole, 23);
         }
       }else{
         if(chessboard[i]->color=="black"){
-          SetConsoleTextAttribute(hConsole, 10); // azul
+          SetConsoleTextAttribute(hConsole, 10); // blue
         }else{
           SetConsoleTextAttribute(hConsole, 15);
         }
@@ -672,13 +672,13 @@ void board::printBoard(){
     }else if(i>47 && i<56){
       if( i % 2 == 0){
         if(chessboard[i]->color=="black"){
-          SetConsoleTextAttribute(hConsole, 10); //negro
+          SetConsoleTextAttribute(hConsole, 10); // black
         }else{
           SetConsoleTextAttribute(hConsole, 15);
         }
       }else{
         if(chessboard[i]->color=="black"){
-          SetConsoleTextAttribute(hConsole, 18); // azul
+          SetConsoleTextAttribute(hConsole, 18); // blue
         }else{
           SetConsoleTextAttribute(hConsole, 23);
         }
@@ -686,13 +686,13 @@ void board::printBoard(){
     }else if(i>55){
       if( i % 2 == 0){
         if(chessboard[i]->color=="black"){
-          SetConsoleTextAttribute(hConsole, 18); //negro
+          SetConsoleTextAttribute(hConsole, 18); // black
         }else{
           SetConsoleTextAttribute(hConsole, 23);
         }
       }else{
         if(chessboard[i]->color=="black"){
-          SetConsoleTextAttribute(hConsole, 10); // azul
+          SetConsoleTextAttribute(hConsole, 10); // blue
         }else{
           SetConsoleTextAttribute(hConsole, 15);
         }
@@ -722,7 +722,7 @@ void board::printBoard(){
     }
 
 
-    //MAP//
+    //Coordinates//
     if(i==7){
       SetConsoleTextAttribute(hConsole, 7);
       cout<<"   8"; 
@@ -754,8 +754,7 @@ void board::printBoard(){
     if(i==63){
       SetConsoleTextAttribute(hConsole, 7);
       cout<<"   1"; 
-    }                            
-    //MAP-END//
+    }
 
     if ( (i+1) % 8 == 0 ){
       cout << "\n";
@@ -763,6 +762,7 @@ void board::printBoard(){
 
   }
   SetConsoleTextAttribute(hConsole, 7);
+  //Coordinates
   cout<<"\n    A          B         C         D         E         F         G         H         \n"<<endl;
 }
 

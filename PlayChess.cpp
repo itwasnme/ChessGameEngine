@@ -151,6 +151,11 @@ int  main(){
           cout<<"TO: ";
           cin >> to;
           if(to == "exit"){
+            for(int i = 0; i<tablero.chessboard.size(); i++){
+              piece* temp = tablero.chessboard[i];
+              delete temp;
+              tablero.chessboard.clear();
+            }
             system("cls");
             break;
           }
